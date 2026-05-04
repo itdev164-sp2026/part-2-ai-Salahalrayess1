@@ -1,4 +1,6 @@
+import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -49,8 +51,13 @@ export default async function ProjectsPage() {
               A live overview of project records loaded directly from Supabase.
             </p>
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-            {rows.length} record{rows.length === 1 ? "" : "s"}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+              {rows.length} record{rows.length === 1 ? "" : "s"}
+            </div>
+            <Link href="/projects/new">
+              <Button>New Project</Button>
+            </Link>
           </div>
         </div>
       </section>
