@@ -99,3 +99,41 @@ Server-side fetching is simpler than useEffect. You fetch once with await and re
 The page loads with data, no loading state. This improves speed and user experience.
 Security is better because the request runs on the server and hides API keys.
 The code is shorter and easier to maintain.
+
+
+## Activity 4: AI-Driven Forms & Validation
+
+### Prompt 1
+**What I asked:**
+> Create a Zod validation schema in a new file src/lib/schemas.ts for a "Project"
+> with the following fields:
+> - title: string, minimum 3 characters, with a custom error message "Title must be at least 3 characters"
+> - description: string, minimum 10 characters, with a custom error message "Description must be at least 10 characters"
+> - status: enum with values "active", "completed", "archived"
+> Export the schema and also export the inferred TypeScript type using z.infer.
+
+**What happened:**
+> The Agent created the schema correctly with all three fields, custom error messages,
+> and exported both the schema and the inferred Project type using z.infer.
+
+### Prompt 2
+**What I asked:**
+> Using the Zod schema from src/lib/schemas.ts, create a form component at
+> src/components/project-form.tsx, a Server Action at src/app/actions.ts,
+> a new page at src/app/projects/new/page.tsx, and add a New Project button
+> to src/app/projects/page.tsx.
+
+**What happened:**
+> The Agent created all four files correctly. The form used react-hook-form with
+> zodResolver, the Server Action had "use server" and validated with safeParse()
+> before inserting into Supabase. The form showed inline errors and a toast on success.
+
+### Reflection
+> The Schema-First approach with Zod changes how I think about forms completely.
+> Instead of scattering validation checks across the form, the API route, and the database,
+> I define the rules once in a schema and both the client and server enforce the same rules.
+> This prevents junk data from reaching the database because even if someone bypasses
+> the client-side validation, the Server Action runs safeParse() again on the server before
+> any insert happens. In previous courses I used if/else checks and required attributes
+> separately in different places. With Zod, one change to the schema updates validation
+> everywhere automatically.
