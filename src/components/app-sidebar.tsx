@@ -2,7 +2,10 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FolderOpen, Home, Settings } from "lucide-react"
+import type { User } from "@supabase/supabase-js"
+import { FolderOpen, Home, LogOut, Settings } from "lucide-react"
+
+import { signOut } from "@/app/actions"
 
 import {
   Sidebar,
@@ -11,11 +14,18 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
+  SidebarFooter,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
+
+type AppSidebarProps = {
+  user: User | null
+}
 
 const navigation = [
   {
@@ -35,7 +45,7 @@ const navigation = [
   },
 ]
 
-export function AppSidebar() {
+export function AppSidebar({ user }: AppSidebarProps) {
   const pathname = usePathname()
 
   return (
@@ -62,6 +72,23 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      {user ? (
+        <>
+          <SidebarSeparator />
+          <SidebarFooter>
+            <form action={signOut}>
+              <Button
+                type="submit"
+                variant="outline"
+                className="w-full justify-start gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Sign Out</span>
+              </Button>
+            </form>
+          </SidebarFooter>
+        </>
+      ) : null}
       <SidebarRail />
     </Sidebar>
   )
