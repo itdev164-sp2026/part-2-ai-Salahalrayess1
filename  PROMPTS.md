@@ -137,3 +137,29 @@ The code is shorter and easier to maintain.
 > any insert happens. In previous courses I used if/else checks and required attributes
 > separately in different places. With Zod, one change to the schema updates validation
 > everywhere automatically.
+
+## Activity 5: Securing the App with Supabase Auth
+
+### Prompt 1
+
+**What I asked:**
+
+> Implement a complete email/password authentication flow using @supabase/ssr with middleware, login/signup, sign out, and protected project routes.
+
+**What happened:**
+
+> Copilot created the authentication system, middleware protection, login page, sign out button, and updated the project queries to use authenticated users.
+
+### Prompt 2
+
+**What I asked:**
+
+> The middleware is using supabase.auth.getSession() to check authentication. This is insecure because it trusts the local cookie without server verification. Replace it with supabase.auth.getUser(), which re-validates the user token with the Supabase Auth server on every request.
+
+**What happened:**
+
+> The middleware was updated to use getUser() instead of getSession() for secure authentication validation.
+
+### Reflection
+
+> The Agent modified many files automatically to support authentication. Middleware-based auth protects routes before pages and database queries load.

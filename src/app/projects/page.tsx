@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { supabase } from "@/lib/supabase"
+import { createSupabaseServerComponentClient } from "@/lib/supabase/server-component"
 
 type Project = {
   id: string | number
@@ -31,6 +31,8 @@ function getStatusVariant(status: string | null) {
 }
 
 export default async function ProjectsPage() {
+  const supabase = createSupabaseServerComponentClient()
+
   const { data: projects, error } = await supabase
     .from("projects")
     .select("id, title, description, status")
