@@ -1,7 +1,7 @@
 import React from "react";
 import type { SVGProps } from "react";
 
-type IconComponent = (props: SVGProps<SVGSVGElement>) => React.ReactElement;
+type IconComponent = (props: SVGProps<SVGSVGElement>) => React.ReactNode;
 
 export function SkillCard({ icon: Icon, title }: { icon: IconComponent; title: string }) {
   return (
