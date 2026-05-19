@@ -163,3 +163,33 @@ The code is shorter and easier to maintain.
 ### Reflection
 
 > The Agent modified many files automatically to support authentication. Middleware-based auth protects routes before pages and database queries load.
+
+## Activity 6: Deployment, Webhooks, & AI-Testing
+
+### Prompt 1
+**What I asked:**
+> I have a Next.js app with Supabase Auth. Using @workspace context to understand the app structure, write an End-to-End (E2E) test file at tests/auth.spec.ts using Playwright. The tests should verify: 1. LOGIN PAGE VISIBLE, 2. REDIRECT AFTER LOGIN, 3. SIDEBAR NAVIGATION. Requirements: Use role-based locators, clear test descriptions, proper Playwright waiting strategies, read credentials from process.env.
+
+**What happened:**
+> The Agent used role-based locators and understood the auth flow from workspace context. Tests did not pass on the first run — the sidebar test failed due to strict mode violation where "Overview" resolved to 2 elements. Required 2 fix iterations to scope locators correctly.
+
+### Prompt 2
+**What I asked:**
+> This Playwright test is failing with the following error: strict mode violation: getByRole('link', { name: 'Overview' }) resolved to 2 elements. Look at the actual component code in @workspace and fix the test to match the real UI. Use role-based locators.
+
+**What happened:**
+> After 2 rounds of iteration, switched from role-based link locators to getByText().first() to avoid the breadcrumb conflict. All 3 tests passed.
+
+### Reflection
+> Having AI write and run tests increased confidence before deploying. The iterative fix cycle — paste error, get fix, rerun — was fast and effective. The Agent caught the strict mode violation that manual browser testing would have missed entirely.
+
+### Course Reflection
+> In Activity 1, my prompts were vague and required multiple follow-ups to get
+> the right output. By Activity 6, I learned to front-load every prompt with
+> file paths, exact requirements, and constraints, which cut the number of
+> correction rounds significantly. The biggest shift was learning to treat the
+> AI as a junior developer — I review every change, catch mistakes, and make
+> the architectural decisions myself. The most important thing I learned is that
+> the quality of the output is directly tied to the quality of the prompt, and
+> that being the Architect means you never accept generated code without
+> understanding what it does.
