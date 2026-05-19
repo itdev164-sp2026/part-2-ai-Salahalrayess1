@@ -1,8 +1,6 @@
 "use server"
-
 import { redirect } from "next/navigation"
 import { z } from "zod"
-
 import { projectSchema } from "@/lib/schemas"
 import { createSupabaseServerActionClient } from "@/lib/supabase/server-action"
 
@@ -22,7 +20,6 @@ export async function authenticate(
   formData: FormData
 ): Promise<AuthFormState> {
   const parsed = authSchema.safeParse(Object.fromEntries(formData.entries()))
-
   if (!parsed.success) {
     return {
       error: parsed.error.issues[0]?.message ?? "Validation failed",
@@ -30,23 +27,17 @@ export async function authenticate(
     }
   }
 
-  const supabase = createSupabaseServerActionClient()
+  const supabase = await createSupabaseServerActionClient()
   const { mode, email, password } = parsed.data
 
   if (mode === "signUp") {
     const { data, error } = await supabase.auth.signUp({ email, password })
-
     if (error) {
-      return {
-        error: error.message,
-        message: null,
-      }
+      return { error: error.message, message: null }
     }
-
     if (data.session) {
       redirect("/projects")
     }
-
     return {
       error: null,
       message: "Account created. Check your email to finish signing in.",
@@ -54,48 +45,28 @@ export async function authenticate(
   }
 
   const { error } = await supabase.auth.signInWithPassword({ email, password })
-
   if (error) {
-    return {
-      error: error.message,
-      message: null,
-    }
+    return { error: error.message, message: null }
   }
-
   redirect("/projects")
 }
 
 export async function createProject(data: unknown) {
   const parsed = projectSchema.safeParse(data)
-
   if (!parsed.success) {
-    return {
-      success: false,
-      error: "Validation failed",
-    }
+    return { success: false, error: "Validation failed" }
   }
 
-  const supabase = createSupabaseServerActionClient()
-
-  const { error } = await supabase
-    .from("projects")
-    .insert([parsed.data])
-
+  const supabase = await createSupabaseServerActionClient()
+  const { error } = await supabase.from("projects").insert([parsed.data])
   if (error) {
-    return {
-      success: false,
-      error: error.message,
-    }
+    return { success: false, error: error.message }
   }
-
-  return {
-    success: true,
-  }
+  return { success: true }
 }
 
 export async function signOut() {
-  const supabase = createSupabaseServerActionClient()
-
+  const supabase = await createSupabaseServerActionClient()
   await supabase.auth.signOut()
   redirect("/login")
 }

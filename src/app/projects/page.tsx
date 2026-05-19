@@ -31,8 +31,7 @@ function getStatusVariant(status: string | null) {
 }
 
 export default async function ProjectsPage() {
-  const supabase = createSupabaseServerComponentClient()
-
+const supabase = await createSupabaseServerComponentClient()
   const { data: projects, error } = await supabase
     .from("projects")
     .select("id, title, description, status")
